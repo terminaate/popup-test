@@ -1,0 +1,12 @@
+.popupContainer {
+    position: absolute;
+    width: max-content;
+    max-width: 200px;
+    height: max-content;
+    border-radius: 5px;
+    background-color: var(--text-primary);
+    color: var(--background-primary);
+    display: flex;
+    //align-items: center;
+    flex-direction: column;
+}

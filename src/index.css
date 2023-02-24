@@ -1,0 +1,21 @@
+*, *:after, *:before {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --background-primary: #222;
+    --text-primary: #f2f2f2;
+    --font-primary: Arial, sans-serif;
+}
+
+body {
+    background-color: var(--background-primary);
+    color: var(--text-primary);
+    font-family: var(--font-primary);
+}
+
+#popups {
+    z-index: 100000;
+}
