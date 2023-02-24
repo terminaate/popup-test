@@ -6,13 +6,14 @@ import {createPortal} from "react-dom";
 
 interface IPopup extends HTMLMotionProps<"div"> {
     containerRef: RefObject<HTMLElement>;
+    event?: "mousedown" | "mouseup" | "click";
 }
 
 const calculateTop = (initialTop: number, initialHeight: number) => {
     return (initialTop + initialHeight / 2) + initialHeight / 10;
 }
 
-const Popup: FC<IPopup> = ({containerRef, children, className, ...props}) => {
+const Popup: FC<IPopup> = ({containerRef, children, className, event="click", ...props}) => {
     const [visible, setVisible] = useState(false);
     const [top, setTop] = useState<number>(0);
     const [left, setLeft] = useState<number>(0);
@@ -21,13 +22,12 @@ const Popup: FC<IPopup> = ({containerRef, children, className, ...props}) => {
         setVisible(false)
     }
 
-    const ref = useOutsideClick<HTMLDivElement>(closePopup, "mousedown", containerRef)
+    const ref = useOutsideClick<HTMLDivElement>(closePopup, event, containerRef)
 
     useEffect(() => {
 
         const updatePosition = () => {
             const rect = containerRef.current?.getBoundingClientRect()!;
-            const refRect = ref.current?.clientLeft!;
             setTop(calculateTop(rect.y / 2, rect.height));
             setLeft(rect.left)
         }
@@ -39,10 +39,10 @@ const Popup: FC<IPopup> = ({containerRef, children, className, ...props}) => {
         const handler = () => {
             setVisible(prev => !prev);
         }
-        containerRef.current?.addEventListener("click", handler)
+        containerRef.current?.addEventListener(event, handler)
 
         return () => {
-            containerRef.current?.removeEventListener("click", handler)
+            containerRef.current?.removeEventListener(event, handler)
             window.removeEventListener("resize", updatePosition);
         }
     }, [])
